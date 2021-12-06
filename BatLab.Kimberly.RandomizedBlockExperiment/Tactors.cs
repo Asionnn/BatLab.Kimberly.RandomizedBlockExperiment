@@ -61,6 +61,12 @@ namespace BatLab.Kimberly.RandomizedBlockExperiment
                 System.Diagnostics.Debug.WriteLine("Not connected");
             }
         }
+
+        public void pulseTactors()
+        {
+            //TODO: add parameter that accepts an enum of the tactor pattern
+        }
+
     }
 
 

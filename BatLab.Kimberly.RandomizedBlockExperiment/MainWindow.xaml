@@ -5,8 +5,20 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BatLab.Kimberly.RandomizedBlockExperiment"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="600" Width="800">
     <Grid>
-
+        <Canvas x:Name="Canvas_Sample_Buttons" Height="600" Canvas.Left="0" Canvas.Top="0" Width="800">
+            <Button x:Name="Left_Turn_Btn" Content="Left Turn" Height="42" Width="120" Canvas.Left="76" Canvas.Top="112" Click="Left_Turn_Btn_Click"/>
+            <Button x:Name="Right_Turn_Btn" Content="Right Turn" Height="42" Width="120" Canvas.Left="225" Canvas.Top="112" Click="Right_Turn_Btn_Click"/>
+            <Button x:Name="U_Turn_Btn" Content="U-Turn" Height="42" Width="120" RenderTransformOrigin="3.232,2.269" Canvas.Left="380" Canvas.Top="112" Click="U_Turn_Btn_Click"/>
+            <Button x:Name="Speed_Up_Btn" Content="Speed Up" Height="42" Width="120" Canvas.Left="540" Canvas.Top="112" Click="Speed_Up_Btn_Click"/>
+            <Button x:Name="Slow_Down_Btn" Content="Slow Down" Height="42" Width="120" Canvas.Left="76" Canvas.Top="200" Click="Slow_Down_Btn_Click"/>
+            <Button x:Name="Back_Left_Btn" Content="Back Left" Height="42" Width="120" Canvas.Left="225" Canvas.Top="199" Click="Back_Left_Btn_Click"/>
+            <Button x:Name="Back_Btn" Content="Back" Height="42" Width="120" Canvas.Left="380" Canvas.Top="200" Click="Back_Btn_Click"/>
+            <Button x:Name="Back_Right_Btn" Content="Back Right" Height="42" Width="120" Canvas.Left="540" Canvas.Top="200" Click="Back_Right_Btn_Click"/>
+            <Button x:Name="Pan_Back_to_Front_L_Btn" Content="Pan back-to-front(L)" Height="42" Width="120" Canvas.Left="76" Canvas.Top="290" Click="Pan_Back_to_Front_L_Btn_Click"/>
+            <Button x:Name="Pan_back_to_Front_R_Btn" Content="Pan back-to-front(R)" Height="42" Width="120" Canvas.Left="225" Canvas.Top="290" Click="Pan_back_to_Front_R_Btn_Click"/>
+            <Button x:Name="Speeding_Btn" Content="Speeding" Height="42" Width="120" Canvas.Left="380" Canvas.Top="290" Click="Speeding_Btn_Click"/>
+        </Canvas>
     </Grid>
 </Window>

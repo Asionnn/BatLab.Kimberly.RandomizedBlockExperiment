@@ -26,5 +26,62 @@ namespace BatLab.Kimberly.RandomizedBlockExperiment
             InitializeComponent();
             tactors = new Tactors();
         }
+
+        #region Sample Buttons Click Events
+        private void Left_Turn_Btn_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Right_Turn_Btn_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void U_Turn_Btn_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Speed_Up_Btn_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Slow_Down_Btn_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Back_Left_Btn_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Back_Btn_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Back_Right_Btn_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Pan_Back_to_Front_L_Btn_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Pan_back_to_Front_R_Btn_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Speeding_Btn_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+        #endregion
     }
 }
