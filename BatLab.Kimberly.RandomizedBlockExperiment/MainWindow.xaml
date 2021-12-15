@@ -5,9 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BatLab.Kimberly.RandomizedBlockExperiment"
         mc:Ignorable="d"
-        Title="MainWindow" Height="600" Width="800">
+        Title="MainWindow" Height="600" Width="800" Background="LightGray">
     <Grid>
-        <Canvas x:Name="Canvas_Sample_Buttons" Height="600" Canvas.Left="0" Canvas.Top="0" Width="800">
+        <Canvas x:Name="Canvas_Sample_Buttons" Height="600" Canvas.Left="0" Canvas.Top="0" Width="800" Visibility="Collapsed">
             <Button x:Name="Left_Turn_Btn" Content="Left Turn" Height="42" Width="120" Canvas.Left="76" Canvas.Top="112" Click="Left_Turn_Btn_Click"/>
             <Button x:Name="Right_Turn_Btn" Content="Right Turn" Height="42" Width="120" Canvas.Left="225" Canvas.Top="112" Click="Right_Turn_Btn_Click"/>
             <Button x:Name="U_Turn_Btn" Content="U-Turn" Height="42" Width="120" RenderTransformOrigin="3.232,2.269" Canvas.Left="380" Canvas.Top="112" Click="U_Turn_Btn_Click"/>
@@ -19,6 +19,29 @@
             <Button x:Name="Pan_Back_to_Front_L_Btn" Content="Pan back-to-front(L)" Height="42" Width="120" Canvas.Left="76" Canvas.Top="290" Click="Pan_Back_to_Front_L_Btn_Click"/>
             <Button x:Name="Pan_back_to_Front_R_Btn" Content="Pan back-to-front(R)" Height="42" Width="120" Canvas.Left="225" Canvas.Top="290" Click="Pan_back_to_Front_R_Btn_Click"/>
             <Button x:Name="Speeding_Btn" Content="Speeding" Height="42" Width="120" Canvas.Left="380" Canvas.Top="290" Click="Speeding_Btn_Click"/>
+            <Button x:Name="Start" Content="Start" Height="42" Width="120" Canvas.Left="340" Canvas.Top="450" Click="Start_Click"/>
+
+
+        </Canvas>
+        <Canvas x:Name="Canvas_Experiment_Window" Height="600" Width="800" Visibility="Visible">
+            <Label x:Name="BlockNumber" Content="Randomized block Experiment" Height="104" Canvas.Left="12" Canvas.Top="10" Width="353" FontSize="16"/>
+            <Label x:Name="ParticipantNumber" Content="Participant Number: " Height="37" Canvas.Left="500" Canvas.Top="10" Width="160" FontSize="16" RenderTransformOrigin="0.517,0.726"/>
+            <Label x:Name="ReactionTimeLbl" Content="Reaction Time: " Height="37" Canvas.Left="536" Canvas.Top="52" Width="160" FontSize="16"/>
+            <TextBox x:Name="TxtParticipantNumber" Height="28" Canvas.Left="660" Canvas.Top="14" TextWrapping="Wrap" Width="87" FontSize="16"/>
+            <RichTextBox Height="342" Canvas.Left="22" Canvas.Top="202" Width="334" TextChanged="RichTextBox_TextChanged">
+                <FlowDocument>
+                    <Paragraph>
+                        <Run Text=""/>
+                    </Paragraph>
+                </FlowDocument>
+            </RichTextBox>
+            <Label x:Name="Q1Lbl" Content="Question 1 Answer: " Height="36" Canvas.Left="12" Canvas.Top="166" Width="354" FontSize="16"/>
+            <TextBox x:Name="TxtAccuracyRating" Height="46" Canvas.Left="689" Canvas.Top="202" TextWrapping="Wrap" Width="50" FontSize="36" TextChanged="TxtAccuracyRating_TextChanged" MaxLength="1" />
+            <TextBox x:Name="TxtIntuitivenessRating" Height="46" Canvas.Left="689" Canvas.Top="330" TextWrapping="Wrap" Width="50" FontSize="36" TextChanged="TxtIntuitivenessRating_TextChanged" MaxLength="1"/>
+            <Label x:Name="LblQ2" Content="Question 2 Answer&#xD;&#xA;Accuracy" Height="68" Canvas.Left="519" Canvas.Top="202" Width="165" FontSize="16"/>
+            <Label x:Name="LblQ3" Content="Question 3 Answer&#xD;&#xA;Intuitiveness&#xD;&#xA;&#xD;&#xA;" Height="61" Canvas.Left="518" Canvas.Top="330" Width="186" FontSize="16"/>
+            <Button x:Name="NextBtn" Content="Next" Height="44" Canvas.Left="638" Canvas.Top="500" Width="132" Click="NextBtn_Click" FontSize="20" FontFamily="Segoe UI"/>
+            <Button x:Name="StartTimer" Content="Start" Height="44" Canvas.Left="479" Canvas.Top="500" Width="132" Click="StartTimer_Click" FontSize="20" FontFamily="Segoe UI"/>
         </Canvas>
     </Grid>
 </Window>

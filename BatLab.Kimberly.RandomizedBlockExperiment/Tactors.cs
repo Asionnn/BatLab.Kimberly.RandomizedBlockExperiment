@@ -39,6 +39,10 @@ namespace BatLab.Kimberly.RandomizedBlockExperiment
         public static extern int CloseAll();
         #endregion
 
+        public Tactors()
+        {
+            setupTactors();
+        }
 
         public void setupTactors()
         {

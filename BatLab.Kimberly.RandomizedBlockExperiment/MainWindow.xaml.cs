@@ -21,10 +21,18 @@ namespace BatLab.Kimberly.RandomizedBlockExperiment
     public partial class MainWindow : Window
     {
         private Tactors tactors;
+        private Response[] responses;
         public MainWindow()
         {
             InitializeComponent();
-            tactors = new Tactors();
+            //tactors = new Tactors();
+            responses = new Response[12];
+        }
+
+        private void Start_Click(object sender, RoutedEventArgs e)
+        {
+            Canvas_Sample_Buttons.Visibility = Visibility.Hidden;
+            Canvas_Experiment_Window.Visibility = Visibility.Visible;
         }
 
         #region Sample Buttons Click Events
@@ -83,5 +91,30 @@ namespace BatLab.Kimberly.RandomizedBlockExperiment
 
         }
         #endregion
+
+        private void RichTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
+
+        private void TxtAccuracyRating_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
+
+        private void TxtIntuitivenessRating_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
+
+        private void NextBtn_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void StartTimer_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
