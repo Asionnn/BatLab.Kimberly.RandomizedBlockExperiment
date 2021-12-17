@@ -6,17 +6,10 @@ namespace BatLab.Kimberly.RandomizedBlockExperiment
 {
     public class Response
     {
-        private double ReactionTime { get; set; }
-        private string Question1 { get; set; }
-        private int AccuracyRating { get; set; }
-        private int IntuitivenessRating { get; set; }
-
-        public Response(double reactionTime, string question1, int accuracyRating, int intuitivenessRating)
-        {
-            ReactionTime = reactionTime;
-            Question1 = question1;
-            AccuracyRating = accuracyRating;
-            IntuitivenessRating = intuitivenessRating;
-        }
+        public string BlockInfo { get; set; }
+        public double ReactionTime { get; set; }
+        public string Question1 { get; set; }
+        public int AccuracyRating { get; set; }
+        public int IntuitivenessRating { get; set; }
     }
 }

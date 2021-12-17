@@ -1,17 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace BatLab.Kimberly.RandomizedBlockExperiment
 {
@@ -22,17 +14,103 @@ namespace BatLab.Kimberly.RandomizedBlockExperiment
     {
         private Tactors tactors;
         private Response[] responses;
+        private Random rand = new Random();
+        private Pattern[] patterns;
+        private Pattern selectedPattern;
+        private Stopwatch stopWatch;
+
+        private int index = 0;
+        private bool enterDisabled;
         public MainWindow()
         {
             InitializeComponent();
             //tactors = new Tactors();
-            responses = new Response[12];
+            responses = new Response[120];
+            patterns = Populator.SetupPatterns();
+            enterDisabled = false;
+            stopWatch = new Stopwatch();
+
+            selectedPattern = patterns[rand.Next(40)];
+            BlockNumber.Content = $"Block Number: {selectedPattern.BlockNumber}" +
+                $"\nWarning: {selectedPattern.Warning}" +
+                $"\nLocation: {selectedPattern.SeatLocation}" +
+                $"\nSequence: {selectedPattern.TactorSequence}" +
+                $"\n{index}/120 Trials Completed";
+        }
+
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.Key == Key.Enter && !enterDisabled)
+            {
+                NextBtn.Visibility = Visibility.Visible;
+                StartTimerBtn.Visibility = Visibility.Hidden;
+
+                stopWatch.Stop();
+
+            }
         }
 
         private void Start_Click(object sender, RoutedEventArgs e)
         {
             Canvas_Sample_Buttons.Visibility = Visibility.Hidden;
             Canvas_Experiment_Window.Visibility = Visibility.Visible;
+            
+        }
+
+        private void NextBtn_Click(object sender, RoutedEventArgs e)
+        {
+            StartTimerBtn.Visibility = Visibility.Visible;
+            NextBtn.Visibility = Visibility.Hidden;
+            enterDisabled = true;
+
+            //Save response
+            TimeSpan timeSpan = stopWatch.Elapsed;
+            responses[index] = new Response
+            {
+                BlockInfo = selectedPattern.BlockNumber,
+                ReactionTime = timeSpan.TotalMilliseconds, //todo,
+                Question1 = new TextRange(Q1Answer.Document.ContentStart, Q1Answer.Document.ContentEnd).Text,
+                AccuracyRating = int.Parse(TxtAccuracyRating.Text),
+                IntuitivenessRating = int.Parse(TxtIntuitivenessRating.Text)
+            };
+            index++;
+            stopWatch.Reset();
+
+            if(index == 120)
+            {
+                //TODO close window and output data here
+                Array.Sort<Pattern>(patterns, new Comparison<Pattern>((x, y) => x.BlockNumber.CompareTo(y.BlockNumber)));
+                foreach(var p in patterns)
+                {
+                    System.Diagnostics.Debug.WriteLine(p.BlockNumber);
+                }
+                this.Close();
+
+            }
+
+            selectedPattern.Counter--;
+            while ((selectedPattern = patterns[rand.Next(40)]).Counter == 0) ;
+
+            //Update labels
+            //Q1Answer.Document.Blocks.Clear();
+            //TxtAccuracyRating.Text = "";
+            // TxtIntuitivenessRating.Text = "";
+            BlockNumber.Content = $"Block Number: {selectedPattern.BlockNumber}" +
+            $"\nWarning: {selectedPattern.Warning}" +
+            $"\nLocation: {selectedPattern.SeatLocation}" +
+            $"\nSequence: {selectedPattern.TactorSequence}" +
+            $"\n{index}/120 Trials Completed";
+        }
+
+        private void StartTimer_Click(object sender, RoutedEventArgs e)
+        {
+            StartTimerBtn.Visibility = Visibility.Hidden;
+            NextBtn.Visibility = Visibility.Hidden;
+            enterDisabled = false;
+
+            //TODO Start stopwatch and vibrate tactors
+            stopWatch.Start();
+
         }
 
         #region Sample Buttons Click Events
@@ -103,16 +181,6 @@ namespace BatLab.Kimberly.RandomizedBlockExperiment
         }
 
         private void TxtIntuitivenessRating_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
-        }
-
-        private void NextBtn_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void StartTimer_Click(object sender, RoutedEventArgs e)
         {
 
         }
