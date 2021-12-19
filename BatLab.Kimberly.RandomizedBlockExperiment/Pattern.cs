@@ -8,5 +8,6 @@
         public string TactorSequence { get; set; }
         public bool? IsSimultaneous { get; set; }
         public int Counter { get; set; }
+        public string Sort { get; set; }
     }
 }

@@ -18,6 +18,8 @@ namespace BatLab.Kimberly.RandomizedBlockExperiment
         private Pattern[] patterns;
         private Pattern selectedPattern;
         private Stopwatch stopWatch;
+        private int prevBlockInterval = 0;
+        private int currentBlockInterval = 10;
 
         private int index = 0;
         private bool enterDisabled;
@@ -30,7 +32,7 @@ namespace BatLab.Kimberly.RandomizedBlockExperiment
             enterDisabled = false;
             stopWatch = new Stopwatch();
 
-            selectedPattern = patterns[rand.Next(40)];
+            selectedPattern = patterns[rand.Next(currentBlockInterval)];
             BlockNumber.Content = $"Block Number: {selectedPattern.BlockNumber}" +
                 $"\nWarning: {selectedPattern.Warning}" +
                 $"\nLocation: {selectedPattern.SeatLocation}" +
@@ -79,17 +81,26 @@ namespace BatLab.Kimberly.RandomizedBlockExperiment
             if(index == 120)
             {
                 //TODO close window and output data here
-                Array.Sort<Pattern>(patterns, new Comparison<Pattern>((x, y) => x.BlockNumber.CompareTo(y.BlockNumber)));
+                Array.Sort(patterns, new Comparison<Pattern>((x, y) => x.BlockNumber.CompareTo(y.BlockNumber)));
+
                 foreach(var p in patterns)
                 {
-                    System.Diagnostics.Debug.WriteLine(p.BlockNumber);
+                    Debug.WriteLine(p.BlockNumber);
                 }
-                this.Close();
+                Close();
+                return;
 
             }
 
             selectedPattern.Counter--;
-            while ((selectedPattern = patterns[rand.Next(40)]).Counter == 0) ;
+            if(index % 30 == 0)
+            {
+                prevBlockInterval = currentBlockInterval;
+                currentBlockInterval += 10;
+            }
+
+            System.Diagnostics.Debug.WriteLine(prevBlockInterval + " " + currentBlockInterval);
+            while ((selectedPattern = patterns[rand.Next(prevBlockInterval, currentBlockInterval)]).Counter == 0) ;
 
             //Update labels
             //Q1Answer.Document.Blocks.Clear();
