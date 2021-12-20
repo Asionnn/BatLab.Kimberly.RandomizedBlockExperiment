@@ -56,7 +56,6 @@ namespace BatLab.Kimberly.RandomizedBlockExperiment
         {
             Canvas_Sample_Buttons.Visibility = Visibility.Hidden;
             Canvas_Experiment_Window.Visibility = Visibility.Visible;
-            
         }
 
         private void NextBtn_Click(object sender, RoutedEventArgs e)
@@ -103,9 +102,9 @@ namespace BatLab.Kimberly.RandomizedBlockExperiment
             while ((selectedPattern = patterns[rand.Next(prevBlockInterval, currentBlockInterval)]).Counter == 0) ;
 
             //Update labels
-            //Q1Answer.Document.Blocks.Clear();
-            //TxtAccuracyRating.Text = "";
-            // TxtIntuitivenessRating.Text = "";
+            Q1Answer.Document.Blocks.Clear();
+            TxtAccuracyRating.Text = "";
+             TxtIntuitivenessRating.Text = "";
             BlockNumber.Content = $"Block Number: {selectedPattern.BlockNumber}" +
             $"\nWarning: {selectedPattern.Warning}" +
             $"\nLocation: {selectedPattern.SeatLocation}" +
@@ -120,7 +119,16 @@ namespace BatLab.Kimberly.RandomizedBlockExperiment
             enterDisabled = false;
 
             //TODO Start stopwatch and vibrate tactors
+            
+            var tactorsStringArray = selectedPattern.TactorSequence.Split(new string[] { "->", "," }, System.StringSplitOptions.RemoveEmptyEntries);
+            var tactorsArray = Array.ConvertAll(tactorsStringArray, int.Parse);
+            var doubleSequence = int.Parse(selectedPattern.BlockNumber.Substring(0, 1)) % 2 == 0;
+            var isSimultaneous = selectedPattern.IsSimultaneous.HasValue;
+            var isHeadway = int.Parse(selectedPattern.BlockNumber.Substring(0, 1)) >= 9;
+            var isForwardCollision = int.Parse(selectedPattern.BlockNumber.Substring(0, 1)) == 9;
+
             stopWatch.Start();
+            tactors.pulseTactors(tactorsArray, doubleSequence, isSimultaneous, isHeadway, isForwardCollision);
 
         }
 

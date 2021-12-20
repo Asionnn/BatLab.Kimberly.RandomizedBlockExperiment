@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
-using System.Text;
 
 namespace BatLab.Kimberly.RandomizedBlockExperiment
 {
-    class Tactors
+    public class Tactors
     {
         #region Tactor Methods
         private const string DDL_PATH = @"C:\Users\batla\Desktop\TDK\TDKAPI_1.0.6.0.x64\TDKAPI_1.0.6.0\libraries\Windows\TactorInterface.dll";
@@ -47,6 +47,7 @@ namespace BatLab.Kimberly.RandomizedBlockExperiment
         public static extern int CloseAll();
         #endregion
 
+        private Stopwatch stopWatch = new Stopwatch();
         public Tactors()
         {
             setupTactors();
@@ -92,6 +93,34 @@ namespace BatLab.Kimberly.RandomizedBlockExperiment
                     {
                         //maybe use a stopwatch here
                         //Start stopwatch and start pulsing, then wait until stop watch hits 5015 ms and play the next and so on
+                        
+                        var trialDone = false;
+                        var timesPulsed = 0;
+                        stopWatch.Start();
+                        while (!trialDone)
+                        {
+                            if(timesPulsed == 3)
+                            {
+                                trialDone = true;
+                            }
+                            switch (stopWatch.ElapsedMilliseconds)
+                            {
+                                case 0:
+                                    Pulse(0, 3, 215, 0);
+                                    timesPulsed++;
+                                    break;
+                                case 5015:
+                                    Pulse(0, 3, 215, 0);
+                                    timesPulsed++;
+                                    break;
+                                case 8670:
+                                    Pulse(0, 3, 215, 0);
+                                    timesPulsed++;
+                                    break;
+                            }
+                        }
+                        stopWatch.Stop();
+                        stopWatch.Reset();
                         return;
                     }
                     else
@@ -100,6 +129,7 @@ namespace BatLab.Kimberly.RandomizedBlockExperiment
                         {
                             Pulse(0, tactors[x], 215, 2500 * x + 215);
                         }
+                        return;
                     }
                 }
 
@@ -122,7 +152,7 @@ namespace BatLab.Kimberly.RandomizedBlockExperiment
                 
             }
             else //Block 2 or 4
-            {   
+            {
                 List<int> tactorsList = new List<int>();
                 tactorsList.AddRange(tactors);
                 tactorsList.AddRange(tactors);
@@ -130,7 +160,40 @@ namespace BatLab.Kimberly.RandomizedBlockExperiment
                 {
                     if (isForwardCollision)
                     {
-                        //maybe use stopwatch here
+                        var trialDone = false;
+                        var timesPulsed = 0;
+                        stopWatch.Start();
+                        while (!trialDone)
+                        {
+                            if(timesPulsed == 3)
+                            {
+                                stopWatch.Reset();
+                            }
+                            if(timesPulsed == 6)
+                            {
+                                trialDone = true;
+                            }
+                            switch (stopWatch.ElapsedMilliseconds)
+                            {
+                                case 0:
+                                    Pulse(0, 3, 108, 0);
+                                    timesPulsed++;
+                                    break;
+                                case 2508:
+                                    Pulse(0, 3, 108, 0);
+                                    timesPulsed++;
+                                    break;
+                                case 4336:
+                                    Pulse(0, 3, 108, 0);
+                                    timesPulsed++;
+                                    break;
+                                case 5044:
+                                    stopWatch.Reset();
+                                    break;
+                            }
+                        }
+                        stopWatch.Stop();
+                        stopWatch.Reset();
                         return;
                     }
                     else
@@ -167,10 +230,7 @@ namespace BatLab.Kimberly.RandomizedBlockExperiment
                 
             }
 
-
         }
-
     }
-
 
 }
