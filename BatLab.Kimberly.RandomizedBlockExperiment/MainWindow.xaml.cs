@@ -129,7 +129,7 @@ namespace BatLab.Kimberly.RandomizedBlockExperiment
             var isForwardCollision = int.Parse(selectedPattern.BlockNumber.Substring(0, 1)) == 9;
 
             stopWatch.Start();
-            //tactors.pulseTactors(tactorsArray, doubleSequence, isSimultaneous, isHeadway, isForwardCollision);
+            tactors.pulseTactors(tactorsArray, doubleSequence, isSimultaneous, isHeadway, isForwardCollision);
 
         }
 
