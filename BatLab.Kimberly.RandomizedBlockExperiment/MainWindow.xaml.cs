@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -12,6 +13,45 @@ namespace BatLab.Kimberly.RandomizedBlockExperiment
     /// </summary>
     public partial class MainWindow : Window
     {
+        #region Tactor Methods
+        private const string DDL_PATH = @"C:\Users\batla\Desktop\TDK\TDKAPI_1.0.6.0.x64\TDKAPI_1.0.6.0\libraries\Windows\TactorInterface.dll";
+
+        [DllImport(DDL_PATH,
+            CallingConvention = CallingConvention.Cdecl)]
+        public static extern int Discover(int type);
+
+        [DllImport(DDL_PATH,
+            CallingConvention = CallingConvention.Cdecl)]
+        public static extern int Connect(string name, int type, IntPtr _callback);
+
+        [DllImport(DDL_PATH,
+            CallingConvention = CallingConvention.Cdecl)]
+        public static extern int InitializeTI();
+
+        [DllImport(DDL_PATH,
+            CallingConvention = CallingConvention.Cdecl)]
+        public static extern int Pulse(int deviceID, int tacNum, int msDuration, int delay);
+
+        [DllImport(DDL_PATH,
+            CallingConvention = CallingConvention.Cdecl)]
+        public static extern IntPtr GetDiscoveredDeviceName(int index);
+
+        [DllImport(DDL_PATH,
+           CallingConvention = CallingConvention.Cdecl)]
+        public static extern int ChangeGain(int deviceID, int tacNum, int gainval, int delay);
+        [DllImport(DDL_PATH,
+            CallingConvention = CallingConvention.Cdecl)]
+        public static extern int ChangeFreq(int deviceId, int tacNum, int freqVal, int delay);
+
+        [DllImport(DDL_PATH,
+            CallingConvention = CallingConvention.Cdecl)]
+        public static extern int SendActionWait(int deviceID, int msDuration, int delay);
+
+
+        [DllImport(DDL_PATH,
+            CallingConvention = CallingConvention.Cdecl)]
+        public static extern int CloseAll();
+        #endregion
         private Tactors tactors;
         private Response[] responses;
         private Random rand = new Random();
@@ -27,6 +67,7 @@ namespace BatLab.Kimberly.RandomizedBlockExperiment
         {
             InitializeComponent();
             //tactors = new Tactors();
+            setupTactors();
             responses = new Response[120];
             patterns = Populator.SetupPatterns();
             enterDisabled = false;
@@ -38,6 +79,28 @@ namespace BatLab.Kimberly.RandomizedBlockExperiment
                 $"\nLocation: {selectedPattern.SeatLocation}" +
                 $"\nSequence: {selectedPattern.TactorSequence}" +
                 $"\n{index}/120 Trials Completed";
+        }
+
+        public void setupTactors()
+        {
+            if (InitializeTI() == 0)
+            {
+                System.Diagnostics.Debug.WriteLine("TDK Initialized");
+            }
+
+            System.Diagnostics.Debug.WriteLine("Tactors: " + Discover(1));
+            string name = Marshal.PtrToStringAnsi((IntPtr)GetDiscoveredDeviceName(0));
+            System.Diagnostics.Debug.WriteLine("Name: " + name);
+
+
+            if (Connect(name, 1, IntPtr.Zero) >= 0)
+            {
+                System.Diagnostics.Debug.WriteLine("Connected");
+            }
+            else
+            {
+                System.Diagnostics.Debug.WriteLine("Not connected");
+            }
         }
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
@@ -128,7 +191,7 @@ namespace BatLab.Kimberly.RandomizedBlockExperiment
             var isForwardCollision = int.Parse(selectedPattern.BlockNumber.Substring(0, 1)) == 9;
 
             stopWatch.Start();
-            tactors.pulseTactors(tactorsArray, doubleSequence, isSimultaneous, isHeadway, isForwardCollision);
+            //tactors.pulseTactors(tactorsArray, doubleSequence, isSimultaneous, isHeadway, isForwardCollision);
 
         }
 
