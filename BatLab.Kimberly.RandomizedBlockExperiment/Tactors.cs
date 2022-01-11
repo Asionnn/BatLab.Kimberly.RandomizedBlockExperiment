@@ -57,17 +57,17 @@ namespace BatLab.Kimberly.RandomizedBlockExperiment
         {
             if (InitializeTI() == 0)
             {
-                System.Diagnostics.Debug.WriteLine("TDK Initialized");
+                Debug.WriteLine("TDK Initialized");
             }
 
-            System.Diagnostics.Debug.WriteLine("Tactors: " + Discover(1));
+            Debug.WriteLine("Tactors: " + Discover(1));
             string name = Marshal.PtrToStringAnsi(GetDiscoveredDeviceName(0));
-            System.Diagnostics.Debug.WriteLine("Name: " + name);
+            Debug.WriteLine("Name: " + name);
 
 
             if (Connect(name, 1, IntPtr.Zero) >= 0)
             {
-                System.Diagnostics.Debug.WriteLine("Connected");
+                Debug.WriteLine("Connected");
                 for(int x = 1; x <= 20; x++)
                 {
                     _ = ChangeFreq(0, x, 250, 0);
@@ -76,45 +76,41 @@ namespace BatLab.Kimberly.RandomizedBlockExperiment
             }
             else
             {
-                System.Diagnostics.Debug.WriteLine("Not connected");
+                Debug.WriteLine("Not connected");
             }
         }
 
         public void pulseTactors(int[] tactors, bool doubleSequence, bool isSimultaneous, bool isHeadway, bool isForwardCollision)
         {
-            //TODO: add parameter that accepts tactor patterns
-
             //Block 1 or 3
             if (!doubleSequence)
             {
                 if (isHeadway)
                 {
                     if (isForwardCollision)
-                    {
-                        //maybe use a stopwatch here
-                        //Start stopwatch and start pulsing, then wait until stop watch hits 5015 ms and play the next and so on
-                        
+                    {                        
                         var trialDone = false;
                         var timesPulsed = 0;
                         stopWatch.Start();
+                        Pulse(0, tactors[0], 215, 0);
+                        timesPulsed++;
                         while (!trialDone)
                         {
-                            if(timesPulsed == 3)
+                            TimeSpan timeSpan = stopWatch.Elapsed;
+
+                            if (timesPulsed == 3)
                             {
                                 trialDone = true;
                             }
-                            switch (stopWatch.ElapsedMilliseconds)
+
+                            switch (timeSpan.TotalMilliseconds)
                             {
-                                case 0:
-                                    Pulse(0, 3, 215, 0);
-                                    timesPulsed++;
-                                    break;
                                 case 5015:
-                                    Pulse(0, 3, 215, 0);
+                                    Pulse(0, tactors[1], 215, 0);
                                     timesPulsed++;
                                     break;
                                 case 8670:
-                                    Pulse(0, 3, 215, 0);
+                                    Pulse(0, tactors[2], 215, 0);
                                     timesPulsed++;
                                     break;
                             }
@@ -125,70 +121,157 @@ namespace BatLab.Kimberly.RandomizedBlockExperiment
                     }
                     else
                     {
-                        for(int x = 0; x < tactors.Length; x++)
+                        var trialDone = false;
+                        var timesPulsed = 0;
+                        stopWatch.Start();
+                        Pulse(0, tactors[0], 215, 0);
+                        timesPulsed++;
+                        while (!trialDone)
                         {
-                            Pulse(0, tactors[x], 215, 2500 * x + 215);
+                            TimeSpan timeSpan = stopWatch.Elapsed;
+
+                            if (timesPulsed == 5)
+                            {
+                                trialDone = true;
+                            }
+
+                            switch (timeSpan.TotalMilliseconds)
+                            {
+                                case 2500:
+                                    Pulse(0, tactors[1], 215, 0);
+                                    timesPulsed++;
+                                    break;
+                                case 5000:
+                                    Pulse(0, tactors[2], 215, 0);
+                                    timesPulsed++;
+                                    break;
+                                case 7500:
+                                    Pulse(0, tactors[3], 215, 0);
+                                    timesPulsed++;
+                                    break;
+                                case 10000:
+                                    Pulse(0, tactors[4], 215, 0);
+                                    timesPulsed++;
+                                    break;
+                            }
                         }
+                        stopWatch.Stop();
+                        stopWatch.Reset();
                         return;
                     }
                 }
 
                 if (!isSimultaneous)
                 {
-                    for (int x = 0; x < tactors.Length; x++)
+                    var timesPulsed = 0;
+                    var trialDone = false;
+                    stopWatch.Reset();
+                    stopWatch.Start();
+
+                    Pulse(0, tactors[0], 215, 0);
+                    timesPulsed++;
+
+                    while (!trialDone)
                     {
-                        Pulse(0, tactors[x], 215, 215 * x);
+                       
+                        TimeSpan timeSpan = stopWatch.Elapsed;
+
+                        switch (timeSpan.TotalMilliseconds)
+                        {
+                            case 215:
+                                Pulse(0, tactors[1], 215, 0);
+                                timesPulsed++;
+                                break;
+                            case 430:
+                                Pulse(0, tactors[2], 215, 0);
+                                timesPulsed++;
+                                break;
+                        }
+                        if (timesPulsed == tactors.Length)
+                        {
+                            trialDone = true;
+                        }
                     }
+
+                    stopWatch.Stop();
+                    stopWatch.Reset();
                     return;
+           
                 }
                 else
                 {
-                    for (int x = 0; x < tactors.Length; x++)
+                    var timesPulsed = 0;
+                    var trialDone = false;
+                    stopWatch.Reset();
+                    stopWatch.Start();
+
+                    Pulse(0, tactors[0], 215, 0);
+                    Pulse(0, tactors[1], 215, 0);
+                    timesPulsed++;
+
+                    while (!trialDone)
                     {
-                        Pulse(0, tactors[x], 215, 0);
+
+                        TimeSpan timeSpan = stopWatch.Elapsed;
+
+                        switch (timeSpan.TotalMilliseconds)
+                        {
+                            case 215:
+                                Pulse(0, tactors[0], 215, 0);
+                                Pulse(0, tactors[1], 215, 0);
+                                timesPulsed++;
+                                break;
+                            case 430:
+                                Pulse(0, tactors[0], 215, 0);
+                                Pulse(0, tactors[1], 215, 0);
+                                timesPulsed++;
+                                break;
+                        }
+                        if (timesPulsed == tactors.Length)
+                        {
+                            trialDone = true;
+                        }
                     }
+
+                    stopWatch.Stop();
+                    stopWatch.Reset();
                     return;
                 }
                 
             }
             else //Block 2 or 4
             {
-                List<int> tactorsList = new List<int>();
-                tactorsList.AddRange(tactors);
-                tactorsList.AddRange(tactors);
                 if (isHeadway)
                 {
                     if (isForwardCollision)
                     {
-                        var trialDone = false;
-                        var timesPulsed = 0;
+                        bool trialDone = false;
+                        int timesPulsed = 0;
                         stopWatch.Start();
+                        Pulse(0, 3, 108, 0);
+                        timesPulsed++;
                         while (!trialDone)
                         {
-                            if(timesPulsed == 3)
-                            {
-                                stopWatch.Reset();
-                            }
+                            TimeSpan timeSpan = stopWatch.Elapsed;
+
                             if(timesPulsed == 6)
                             {
                                 trialDone = true;
                             }
-                            switch (stopWatch.ElapsedMilliseconds)
+                            switch (timeSpan.TotalMilliseconds)
                             {
-                                case 0:
+                                case 2400:
                                     Pulse(0, 3, 108, 0);
                                     timesPulsed++;
                                     break;
-                                case 2508:
+                                case 4120:
                                     Pulse(0, 3, 108, 0);
                                     timesPulsed++;
                                     break;
-                                case 4336:
-                                    Pulse(0, 3, 108, 0);
-                                    timesPulsed++;
-                                    break;
-                                case 5044:
+                                case 4720:
                                     stopWatch.Reset();
+                                    Pulse(0, 3, 108, 0);
+                                    timesPulsed++;
                                     break;
                             }
                         }
@@ -198,33 +281,136 @@ namespace BatLab.Kimberly.RandomizedBlockExperiment
                     }
                     else
                     {
-                        for (int x = 0; x < tactorsList.Count; x++)
+                        var trialDone = false;
+                        var timesPulsed = 0;
+                        stopWatch.Start();
+                        Pulse(0, tactors[0], 108, 0);
+                        timesPulsed++;
+                        while (!trialDone)
                         {
-                            Pulse(0, tactorsList[x], 108, 1250 * x + 108);
-                        }
-                        return;
+                            TimeSpan timeSpan = stopWatch.Elapsed;
 
+                            if (timesPulsed == 10)
+                            {
+                                trialDone = true;
+                            }
+
+                            switch (timeSpan.TotalMilliseconds)
+                            {
+                                case 1250:
+                                    Pulse(0, tactors[1], 108, 0);
+                                    timesPulsed++;
+                                    break;
+                                case 2500:
+                                    Pulse(0, tactors[2], 108, 0);
+                                    timesPulsed++;
+                                    break;
+                                case 3750:
+                                    Pulse(0, tactors[3], 108, 0);
+                                    timesPulsed++;
+                                    break;
+                                case 5000:
+                                    Pulse(0, tactors[4], 108, 0);
+                                    timesPulsed++;
+                                    break;
+                                case 6250:
+                                    stopWatch.Reset();
+                                    Pulse(0, tactors[0], 108, 0);
+                                    timesPulsed++;
+                                    break;
+                            }
+                        }
+                        stopWatch.Stop();
+                        stopWatch.Reset();
+                        return;
                     }
                 }
 
                 if (!isSimultaneous)
                 {
-                    for (int x = 0; x < tactorsList.Count; x++)
+                    var timesPulsed = 0;
+                    var trialDone = false;
+                    stopWatch.Reset();
+                    stopWatch.Start();
+
+                    Pulse(0, tactors[0], 108, 0);
+                    timesPulsed++;
+
+                    while (!trialDone)
                     {
-                        Pulse(0, tactorsList[x], 108, 108 * x);
+
+                        TimeSpan timeSpan = stopWatch.Elapsed;
+
+                        switch (timeSpan.TotalMilliseconds)
+                        {
+                            case 108:
+                                Pulse(0, tactors[1], 108, 0);
+                                timesPulsed++;
+                                break;
+                            case 216:
+                                Pulse(0, tactors[2], 108, 0);
+                                timesPulsed++;
+                                break;
+                            case 324:
+                                Pulse(0, tactors[0], 108, 9);
+                                timesPulsed++;
+                                stopWatch.Reset();
+                                break;
+                        }
+                        if (timesPulsed == tactors.Length * 2)
+                        {
+                            trialDone = true;
+                        }
                     }
+
+                    stopWatch.Stop();
+                    stopWatch.Reset();
                     return;
+
                 }
                 else
                 {
-                    for(int x = 0; x < tactors.Length; x++)
+                    var timesPulsed = 0;
+                    var trialDone = false;
+                    stopWatch.Reset();
+                    stopWatch.Start();
+
+                    Pulse(0, tactors[0], 108, 0);
+                    Pulse(0, tactors[1], 108, 0);
+                    timesPulsed++;
+
+                    while (!trialDone)
                     {
-                        Pulse(0, tactors[x], 108, 0);
+
+                        TimeSpan timeSpan = stopWatch.Elapsed;
+
+                        switch (timeSpan.TotalMilliseconds)
+                        {
+                            case 108:
+                                Pulse(0, tactors[0], 108, 0);
+                                Pulse(0, tactors[1], 108, 0);
+                                timesPulsed++;
+                                break;
+                            case 216:
+                                Pulse(0, tactors[0], 108, 0);
+                                Pulse(0, tactors[1], 108, 0);
+                                timesPulsed++;
+                                break;
+                            case 324:
+                                Pulse(0, tactors[0], 108, 0);
+                                Pulse(0, tactors[1], 108, 0);
+                                timesPulsed++;
+                                stopWatch.Reset();
+                                break;
+                        }
+                        if (timesPulsed == tactors.Length * 2)
+                        {
+                            trialDone = true;
+                        }
                     }
-                    for (int x = 0; x < tactors.Length; x++)
-                    {
-                        Pulse(0, tactors[x], 108, 108);
-                    }
+
+                    stopWatch.Stop();
+                    stopWatch.Reset();
                     return;
                 }
                 

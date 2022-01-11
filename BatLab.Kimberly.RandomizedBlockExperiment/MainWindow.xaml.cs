@@ -33,12 +33,14 @@ namespace BatLab.Kimberly.RandomizedBlockExperiment
             enterDisabled = false;
             stopWatch = new Stopwatch();
 
-            selectedPattern = patterns[rand.Next(currentBlockInterval)];
+            //selectedPattern = patterns[rand.Next(currentBlockInterval)];
+            selectedPattern = patterns[5];
             BlockNumber.Content = $"Block Number: {selectedPattern.BlockNumber}" +
                 $"\nWarning: {selectedPattern.Warning}" +
                 $"\nLocation: {selectedPattern.SeatLocation}" +
                 $"\nSequence: {selectedPattern.TactorSequence}" +
                 $"\n{index}/120 Trials Completed";
+
         }
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
@@ -103,9 +105,9 @@ namespace BatLab.Kimberly.RandomizedBlockExperiment
             while ((selectedPattern = patterns[rand.Next(prevBlockInterval, currentBlockInterval)]).Counter == 0) ;
 
             //Update labels
-            Q1Answer.Document.Blocks.Clear();
-            TxtAccuracyRating.Text = "";
-             TxtIntuitivenessRating.Text = "";
+            //Q1Answer.Document.Blocks.Clear();
+            //TxtAccuracyRating.Text = "";
+           // TxtIntuitivenessRating.Text = "";
             BlockNumber.Content = $"Block Number: {selectedPattern.BlockNumber}" +
             $"\nWarning: {selectedPattern.Warning}" +
             $"\nLocation: {selectedPattern.SeatLocation}" +
