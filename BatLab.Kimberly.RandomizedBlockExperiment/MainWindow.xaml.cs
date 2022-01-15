@@ -33,8 +33,8 @@ namespace BatLab.Kimberly.RandomizedBlockExperiment
             enterDisabled = false;
             stopWatch = new Stopwatch();
 
-            //selectedPattern = patterns[rand.Next(currentBlockInterval)];
-            selectedPattern = patterns[5];
+            selectedPattern = patterns[rand.Next(currentBlockInterval)];
+            selectedPattern = patterns[37];
             BlockNumber.Content = $"Block Number: {selectedPattern.BlockNumber}" +
                 $"\nWarning: {selectedPattern.Warning}" +
                 $"\nLocation: {selectedPattern.SeatLocation}" +
@@ -127,8 +127,8 @@ namespace BatLab.Kimberly.RandomizedBlockExperiment
             var tactorsArray = Array.ConvertAll(tactorsStringArray, int.Parse);
             var doubleSequence = int.Parse(selectedPattern.BlockNumber.Substring(0, 1)) % 2 == 0;
             var isSimultaneous = selectedPattern.IsSimultaneous.HasValue;
-            var isHeadway = int.Parse(selectedPattern.BlockNumber.Substring(0, 1)) >= 9;
-            var isForwardCollision = int.Parse(selectedPattern.BlockNumber.Substring(0, 1)) == 9;
+            var isHeadway = int.Parse(selectedPattern.BlockNumber.ToCharArray()[2].ToString()) > 9 || selectedPattern.BlockNumber.Substring(2, 2) == "10";
+            var isForwardCollision = int.Parse(selectedPattern.BlockNumber.ToCharArray()[2].ToString()) == 9;
 
             stopWatch.Start();
             tactors.pulseTactors(tactorsArray, doubleSequence, isSimultaneous, isHeadway, isForwardCollision);
