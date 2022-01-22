@@ -34,7 +34,7 @@ namespace BatLab.Kimberly.RandomizedBlockExperiment
             stopWatch = new Stopwatch();
 
             selectedPattern = patterns[rand.Next(currentBlockInterval)];
-            selectedPattern = patterns[37];
+
             BlockNumber.Content = $"Block Number: {selectedPattern.BlockNumber}" +
                 $"\nWarning: {selectedPattern.Warning}" +
                 $"\nLocation: {selectedPattern.SeatLocation}" +
@@ -72,7 +72,7 @@ namespace BatLab.Kimberly.RandomizedBlockExperiment
             responses[index] = new Response
             {
                 BlockInfo = selectedPattern.BlockNumber,
-                ReactionTime = timeSpan.TotalMilliseconds, //todo,
+                ReactionTime = timeSpan.TotalMilliseconds,
                 Question1 = new TextRange(Q1Answer.Document.ContentStart, Q1Answer.Document.ContentEnd).Text,
                 AccuracyRating = int.Parse(TxtAccuracyRating.Text),
                 IntuitivenessRating = int.Parse(TxtIntuitivenessRating.Text)
@@ -101,7 +101,6 @@ namespace BatLab.Kimberly.RandomizedBlockExperiment
                 currentBlockInterval += 10;
             }
 
-            System.Diagnostics.Debug.WriteLine(prevBlockInterval + " " + currentBlockInterval);
             while ((selectedPattern = patterns[rand.Next(prevBlockInterval, currentBlockInterval)]).Counter == 0) ;
 
             //Update labels
@@ -123,11 +122,11 @@ namespace BatLab.Kimberly.RandomizedBlockExperiment
 
             //TODO Start stopwatch and vibrate tactors
             
-            var tactorsStringArray = selectedPattern.TactorSequence.Split(new string[] { "->", "," }, System.StringSplitOptions.RemoveEmptyEntries);
+            var tactorsStringArray = selectedPattern.TactorSequence.Split(new string[] { "->", "," }, StringSplitOptions.RemoveEmptyEntries);
             var tactorsArray = Array.ConvertAll(tactorsStringArray, int.Parse);
             var doubleSequence = int.Parse(selectedPattern.BlockNumber.Substring(0, 1)) % 2 == 0;
             var isSimultaneous = selectedPattern.IsSimultaneous.HasValue;
-            var isHeadway = int.Parse(selectedPattern.BlockNumber.ToCharArray()[2].ToString()) > 9 || selectedPattern.BlockNumber.Substring(2, 2) == "10";
+            var isHeadway = int.Parse(selectedPattern.BlockNumber.ToCharArray()[2].ToString()) == 9 || selectedPattern.BlockNumber.Substring(2, 2) == "10";
             var isForwardCollision = int.Parse(selectedPattern.BlockNumber.ToCharArray()[2].ToString()) == 9;
 
             stopWatch.Start();

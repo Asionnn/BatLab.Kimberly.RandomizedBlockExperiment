@@ -127,7 +127,7 @@ namespace BatLab.Kimberly.RandomizedBlockExperiment
                         Pulse(0, tactors[0], 215, 0);
                         timesPulsed++;
                         while (!trialDone)
-                        {
+                        {                  
                             TimeSpan timeSpan = stopWatch.Elapsed;
 
                             if (timesPulsed == 5)
@@ -300,6 +300,7 @@ namespace BatLab.Kimberly.RandomizedBlockExperiment
                                     trialDone = true;
                                 }
 
+
                                 switch (timeSpan.TotalMilliseconds)
                                 {
                                     case 1250:
@@ -316,14 +317,14 @@ namespace BatLab.Kimberly.RandomizedBlockExperiment
                                         break;
                                     case 5000:
                                         Pulse(0, tactors[4], 108, 0);
-                                        break;
+                                    break;
                                     case 6250:
                                         timesPulsed++;
                                         break;
                                 }
                             }
                         }
-                        
+
                         stopWatch.Stop();
                         stopWatch.Reset();
                         return;
