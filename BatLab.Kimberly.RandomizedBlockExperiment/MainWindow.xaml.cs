@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
+using Syncfusion.XlsIO;
 
 namespace BatLab.Kimberly.RandomizedBlockExperiment
 {
@@ -55,6 +56,46 @@ namespace BatLab.Kimberly.RandomizedBlockExperiment
             }
         }
 
+        private void OutputToSheet()
+        {
+            using (ExcelEngine excelEngine = new ExcelEngine())
+            {
+                //Instantiate the Excel application object
+                IApplication application = excelEngine.Excel;
+
+                //Assigns default application version
+                application.DefaultVersion = ExcelVersion.Excel2013;
+
+                //A new workbook is created equivalent to creating a new workbook in Excel
+                //Create a workbook with 1 worksheet
+                IWorkbook workbook = application.Workbooks.Create(1);
+
+                //Access first worksheet from the workbook
+                IWorksheet worksheet = workbook.Worksheets[0];
+
+                //Setup column headers
+                worksheet.Range["A1"].Text = "Block Number";
+                worksheet.Range["B1"].Text = "Reaction Time";
+                worksheet.Range["C1"].Text = "Question 1";
+                worksheet.Range["D1"].Text = "Accuracy Rating";
+                worksheet.Range["E1"].Text = "Intuitiveness Rating";
+
+                var row = 2;
+                for(int x = 0; x < responses.Length; x++)
+                {
+                    worksheet.Range[$"A{row}"].Text = responses[x].BlockInfo;
+                    worksheet.Range[$"B{row}"].Number = responses[x].ReactionTime;
+                    worksheet.Range[$"C{row}"].Text = responses[x].Question1;
+                    worksheet.Range[$"D{row}"].Number = responses[x].AccuracyRating;
+                    worksheet.Range[$"E{row}"].Number = responses[x].IntuitivenessRating;
+                    row++;
+                }
+
+                workbook.SaveAs($"C:/Users/batla/source/repos/BatLab.Kimberly.RandomizedBlockExperiment/BatLab.Kimberly.RandomizedBlockExperiment/Data/{TxtParticipantNumber.Text}.xlsx");
+
+            }
+        }
+
         private void Start_Click(object sender, RoutedEventArgs e)
         {
             Canvas_Sample_Buttons.Visibility = Visibility.Hidden;
@@ -78,17 +119,20 @@ namespace BatLab.Kimberly.RandomizedBlockExperiment
                 IntuitivenessRating = int.Parse(TxtIntuitivenessRating.Text)
             };
             index++;
+            stopWatch.Stop();
             stopWatch.Reset();
 
             if(index == 120)
             {
                 //TODO close window and output data here
-                Array.Sort(patterns, new Comparison<Pattern>((x, y) => x.BlockNumber.CompareTo(y.BlockNumber)));
+                Array.Sort(patterns, new Comparison<Pattern>((x, y) => x.Sort.CompareTo(y.Sort)));
 
                 foreach(var p in patterns)
                 {
                     Debug.WriteLine(p.BlockNumber);
                 }
+
+                OutputToSheet();
                 Close();
                 return;
 
@@ -104,9 +148,9 @@ namespace BatLab.Kimberly.RandomizedBlockExperiment
             while ((selectedPattern = patterns[rand.Next(prevBlockInterval, currentBlockInterval)]).Counter == 0) ;
 
             //Update labels
-            //Q1Answer.Document.Blocks.Clear();
-            //TxtAccuracyRating.Text = "";
-           // TxtIntuitivenessRating.Text = "";
+            Q1Answer.Document.Blocks.Clear();
+            TxtAccuracyRating.Text = "";
+            TxtIntuitivenessRating.Text = "";
             BlockNumber.Content = $"Block Number: {selectedPattern.BlockNumber}" +
             $"\nWarning: {selectedPattern.Warning}" +
             $"\nLocation: {selectedPattern.SeatLocation}" +
@@ -114,23 +158,26 @@ namespace BatLab.Kimberly.RandomizedBlockExperiment
             $"\n{index}/120 Trials Completed";
         }
 
-        private void StartTimer_Click(object sender, RoutedEventArgs e)
+        private async void StartTimer_Click(object sender, RoutedEventArgs e)
         {
             StartTimerBtn.Visibility = Visibility.Hidden;
             NextBtn.Visibility = Visibility.Hidden;
             enterDisabled = false;
 
-            //TODO Start stopwatch and vibrate tactors
-            
-            var tactorsStringArray = selectedPattern.TactorSequence.Split(new string[] { "->", "," }, StringSplitOptions.RemoveEmptyEntries);
+            var cleanedPattern = selectedPattern.TactorSequence.Replace("20(14)", "14");
+            cleanedPattern = cleanedPattern.Replace("19(11)", "11");
+            cleanedPattern = cleanedPattern.Replace("18(10)", "10");
+            cleanedPattern = cleanedPattern.Replace("17(8)", "8");
+
+            var tactorsStringArray = cleanedPattern.Split(new string[] { "->", "," }, StringSplitOptions.RemoveEmptyEntries);
             var tactorsArray = Array.ConvertAll(tactorsStringArray, int.Parse);
             var doubleSequence = int.Parse(selectedPattern.BlockNumber.Substring(0, 1)) % 2 == 0;
             var isSimultaneous = selectedPattern.IsSimultaneous.HasValue;
             var isHeadway = int.Parse(selectedPattern.BlockNumber.ToCharArray()[2].ToString()) == 9 || selectedPattern.BlockNumber.Substring(2, 2) == "10";
             var isForwardCollision = int.Parse(selectedPattern.BlockNumber.ToCharArray()[2].ToString()) == 9;
 
+            await tactors.pulseTactors(tactorsArray, doubleSequence, isSimultaneous, isHeadway, isForwardCollision);
             stopWatch.Start();
-            tactors.pulseTactors(tactorsArray, doubleSequence, isSimultaneous, isHeadway, isForwardCollision);
 
         }
 

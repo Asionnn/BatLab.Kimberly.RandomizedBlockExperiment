@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 
 namespace BatLab.Kimberly.RandomizedBlockExperiment
 {
@@ -80,7 +81,7 @@ namespace BatLab.Kimberly.RandomizedBlockExperiment
             }
         }
 
-        public void pulseTactors(int[] tactors, bool doubleSequence, bool isSimultaneous, bool isHeadway, bool isForwardCollision)
+        public async Task pulseTactors(int[] tactors, bool doubleSequence, bool isSimultaneous, bool isHeadway, bool isForwardCollision)
         {
             //Block 1 or 3
             if (!doubleSequence)
