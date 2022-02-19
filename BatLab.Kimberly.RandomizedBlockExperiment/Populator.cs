@@ -19,7 +19,7 @@ namespace BatLab.Kimberly.RandomizedBlockExperiment
                 new Pattern { BlockNumber = "1.4.1", Warning="Speed Up", SeatLocation = "Belt", TactorSequence = "2,4", IsSimultaneous = true , Counter = 3, Sort = 7 },
                 new Pattern { BlockNumber = "1.4.2", Warning="Speed Up", SeatLocation = "Pan", TactorSequence = "15,18(10)", IsSimultaneous = true , Counter = 3, Sort = 8 },
                 new Pattern { BlockNumber = "1.5.1", Warning="Slow Down", SeatLocation = "Back", TactorSequence = "6,12", IsSimultaneous = true , Counter = 3, Sort = 9 },
-                new Pattern { BlockNumber = "1.5.2", Warning="Left Turn", SeatLocation = "Pan", TactorSequence = "17(8),20(14)", IsSimultaneous = true , Counter = 3, Sort = 10 },
+                new Pattern { BlockNumber = "1.5.2", Warning="Slow Down", SeatLocation = "Pan", TactorSequence = "17(8),20(14)", IsSimultaneous = true , Counter = 3, Sort = 10 },
 
                 new Pattern { BlockNumber = "2.1.1", Warning="Left Turn", SeatLocation = "Belt", TactorSequence = "2->3->4", Counter = 3, Sort = 11 },
                 new Pattern { BlockNumber = "2.1.2", Warning="Left Turn", SeatLocation = "Back", TactorSequence = "6->9->12", Counter = 3, Sort = 12 },
@@ -30,7 +30,7 @@ namespace BatLab.Kimberly.RandomizedBlockExperiment
                 new Pattern { BlockNumber = "2.4.1", Warning="Speed Up", SeatLocation = "Belt", TactorSequence = "2,4", IsSimultaneous = true , Counter = 3, Sort = 8 },
                 new Pattern { BlockNumber = "2.4.2", Warning="Speed Up", SeatLocation = "Pan", TactorSequence = "15,18(10)", IsSimultaneous = true , Counter = 3, Sort = 10 },
                 new Pattern { BlockNumber = "2.5.1", Warning="Slow Down", SeatLocation = "Back", TactorSequence = "6,12", IsSimultaneous = true , Counter = 3, Sort = 11 },
-                new Pattern { BlockNumber = "2.5.2", Warning="Left Turn", SeatLocation = "Pan", TactorSequence = "17(8),20(14)", IsSimultaneous = true , Counter = 3, Sort = 14 },
+                new Pattern { BlockNumber = "2.5.2", Warning="Slow Down", SeatLocation = "Pan", TactorSequence = "17(8),20(14)", IsSimultaneous = true , Counter = 3, Sort = 14 },
 
                 new Pattern { BlockNumber="3.6.1", Warning="Back Left", SeatLocation="Back", TactorSequence="12->13->14", Counter = 3, Sort = 21 },
                 new Pattern { BlockNumber="3.6.2", Warning="Back", SeatLocation="Back", TactorSequence="9->10->11", Counter = 3, Sort = 22 },

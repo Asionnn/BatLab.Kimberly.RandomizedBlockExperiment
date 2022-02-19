@@ -48,7 +48,6 @@ namespace BatLab.Kimberly.RandomizedBlockExperiment
         public static extern int CloseAll();
         #endregion
 
-        private Stopwatch stopWatch = new Stopwatch();
         public Tactors()
         {
             setupTactors();
@@ -89,156 +88,28 @@ namespace BatLab.Kimberly.RandomizedBlockExperiment
                 if (isHeadway)
                 {
                     if (isForwardCollision)
-                    {                        
-                        var trialDone = false;
-                        var timesPulsed = 0;
-                        stopWatch.Start();
-                        Pulse(0, tactors[0], 215, 0);
-                        timesPulsed++;
-                        while (!trialDone)
-                        {
-                            TimeSpan timeSpan = stopWatch.Elapsed;
-
-                            if (timesPulsed == 3)
-                            {
-                                trialDone = true;
-                            }
-
-                            switch (timeSpan.TotalMilliseconds)
-                            {
-                                case 5015:
-                                    Pulse(0, tactors[0], 215, 0);
-                                    timesPulsed++;
-                                    break;
-                                case 8670:
-                                    Pulse(0, tactors[0], 215, 0);
-                                    timesPulsed++;
-                                    break;
-                            }
-                        }
-                        stopWatch.Stop();
-                        stopWatch.Reset();
+                    {
+                        await ForwardCollisionBlock3(tactors);
                         return;
                     }
                     else
                     {
-                        var trialDone = false;
-                        var timesPulsed = 0;
-                        stopWatch.Start();
-                        Pulse(0, tactors[0], 215, 0);
-                        timesPulsed++;
-                        while (!trialDone)
-                        {                  
-                            TimeSpan timeSpan = stopWatch.Elapsed;
-
-                            if (timesPulsed == 5)
-                            {
-                                trialDone = true;
-                            }
-
-                            switch (timeSpan.TotalMilliseconds)
-                            {
-                                case 2500:
-                                    Pulse(0, tactors[1], 215, 0);
-                                    timesPulsed++;
-                                    break;
-                                case 5000:
-                                    Pulse(0, tactors[2], 215, 0);
-                                    timesPulsed++;
-                                    break;
-                                case 7500:
-                                    Pulse(0, tactors[3], 215, 0);
-                                    timesPulsed++;
-                                    break;
-                                case 10000:
-                                    Pulse(0, tactors[4], 215, 0);
-                                    timesPulsed++;
-                                    break;
-                            }
-                        }
-                        stopWatch.Stop();
-                        stopWatch.Reset();
+                        await HeadwayReductionBlock3(tactors);
                         return;
                     }
                 }
 
                 if (!isSimultaneous)
                 {
-                    var timesPulsed = 0;
-                    var trialDone = false;
-                    stopWatch.Reset();
-                    stopWatch.Start();
-
-                    Pulse(0, tactors[0], 215, 0);
-                    timesPulsed++;
-
-                    while (!trialDone)
-                    {
-                       
-                        TimeSpan timeSpan = stopWatch.Elapsed;
-
-                        switch (timeSpan.TotalMilliseconds)
-                        {
-                            case 215:
-                                Pulse(0, tactors[1], 215, 0);
-                                timesPulsed++;
-                                break;
-                            case 430:
-                                Pulse(0, tactors[2], 215, 0);
-                                timesPulsed++;
-                                break;
-                        }
-                        if (timesPulsed == tactors.Length)
-                        {
-                            trialDone = true;
-                        }
-                    }
-
-                    stopWatch.Stop();
-                    stopWatch.Reset();
+                    await SequenceBlock1(tactors);
                     return;
-           
                 }
                 else
                 {
-                    var timesPulsed = 0;
-                    var trialDone = false;
-                    stopWatch.Reset();
-                    stopWatch.Start();
-
-                    Pulse(0, tactors[0], 215, 0);
-                    Pulse(0, tactors[1], 215, 0);
-                    timesPulsed++;
-
-                    while (!trialDone)
-                    {
-
-                        TimeSpan timeSpan = stopWatch.Elapsed;
-
-                        switch (timeSpan.TotalMilliseconds)
-                        {
-                            case 215*2:
-                                Pulse(0, tactors[0], 215, 0);
-                                Pulse(0, tactors[1], 215, 0);
-                                timesPulsed++;
-                                break;
-                            case 215*4:
-                                Pulse(0, tactors[0], 215, 0);
-                                Pulse(0, tactors[1], 215, 0);
-                                timesPulsed++;
-                                break;
-                        }
-                        if (timesPulsed == tactors.Length + 1)
-                        {
-                            trialDone = true;
-                        }
-                    }
-
-                    stopWatch.Stop();
-                    stopWatch.Reset();
+                    await SimultaneousBlock1(tactors);
                     return;
                 }
-                
+
             }
             else //Block 2 or 4
             {
@@ -246,184 +117,142 @@ namespace BatLab.Kimberly.RandomizedBlockExperiment
                 {
                     if (isForwardCollision)
                     {
-                        for(int x = 0; x < 2; x++)
-                        {
-                            bool trialDone = false;
-                            int timesPulsed = 0;
-                            stopWatch.Reset();
-                            stopWatch.Start();
-                            Pulse(0, tactors[0], 108, 0);
-                            timesPulsed++;
-                            while (!trialDone)
-                            {
-                                TimeSpan timeSpan = stopWatch.Elapsed;
-
-                                if(timesPulsed == 3)
-                                {
-                                    trialDone = true;
-                                }
-                                switch (timeSpan.TotalMilliseconds)
-                                {
-                                    case 2400:
-                                        Pulse(0, tactors[0], 108, 0);
-                                        timesPulsed++;
-                                        break;
-                                    case 4120:
-                                        Pulse(0, tactors[0], 108, 0);
-                                        break;
-                                    case 4720:
-                                        timesPulsed++;
-                                        break;
-                                }
-                            }
-                        }
-                       
-                        stopWatch.Stop();
-                        stopWatch.Reset();
+                        await ForwardCollisionBlock4(tactors);
                         return;
                     }
                     else
                     {
-                        for(int x = 0; x < 2; x++)
-                        {
-                            var trialDone = false;
-                            var timesPulsed = 0;
-                            stopWatch.Reset();
-                            stopWatch.Start();
-                            Pulse(0, tactors[0], 108, 0);
-                            timesPulsed++;
-                            while (!trialDone)
-                            {
-                                TimeSpan timeSpan = stopWatch.Elapsed;
-
-                                if (timesPulsed == 5)
-                                {
-                                    trialDone = true;
-                                }
-
-
-                                switch (timeSpan.TotalMilliseconds)
-                                {
-                                    case 1250:
-                                        Pulse(0, tactors[1], 108, 0);
-                                        timesPulsed++;
-                                        break;
-                                    case 2500:
-                                        Pulse(0, tactors[2], 108, 0);
-                                        timesPulsed++;
-                                        break;
-                                    case 3750:
-                                        Pulse(0, tactors[3], 108, 0);
-                                        timesPulsed++;
-                                        break;
-                                    case 5000:
-                                        Pulse(0, tactors[4], 108, 0);
-                                    break;
-                                    case 6250:
-                                        timesPulsed++;
-                                        break;
-                                }
-                            }
-                        }
-
-                        stopWatch.Stop();
-                        stopWatch.Reset();
+                        await HeadwayReductionBlock4(tactors);
                         return;
                     }
                 }
 
                 if (!isSimultaneous)
                 {
-                    for (int x = 0; x < 2; x++)
-                    {
-                        var timesPulsed = 0;
-                        var trialDone = false;
-                        const int duration = 108;
-                        stopWatch.Reset();
-                        stopWatch.Start();
-
-                        Pulse(0, tactors[0], duration, 0);
-
-                        timesPulsed++;
-
-                        while (!trialDone)
-                        {
-                            TimeSpan timeSpan = stopWatch.Elapsed;
-
-                            switch (timeSpan.TotalMilliseconds)
-                            {
-                                case duration:
-                                    Pulse(0, tactors[1], duration, 0);
-                                    timesPulsed++;
-                                    break;
-                                case duration * 2:
-                                    Pulse(0, tactors[2], duration, 0);
-                                    break;
-                                case duration * 3:
-                                    timesPulsed++;
-                                    break;
-                            }
-
-                            if (timesPulsed == tactors.Length)
-                            {
-                                trialDone = true;
-                            }
-                        }
-                    }
-
-                    stopWatch.Stop();
-                    stopWatch.Reset();
+                    await SequenceBlock2(tactors);
                     return;
-
                 }
                 else
                 {
-                    for(int x = 0; x < 2; x++)
-                    {
-                        var timesPulsed = 0;
-                        var trialDone = false;
-                        const int duration = 108;
-                        stopWatch.Reset();
-                        stopWatch.Start();
-
-                        Pulse(0, tactors[0], duration, 0);
-                        Pulse(0, tactors[1], duration, 0);
-                        timesPulsed++;
-
-                        while (!trialDone)
-                        {
-
-                            TimeSpan timeSpan = stopWatch.Elapsed;
-
-                            switch (timeSpan.TotalMilliseconds)
-                            {
-                                case duration * 2:
-                                    Pulse(0, tactors[0], duration, 0);
-                                    Pulse(0, tactors[1], duration, 0);
-                                    timesPulsed++;
-                                    break;
-                                case duration * 4:
-                                    Pulse(0, tactors[0], duration, 0);
-                                    Pulse(0, tactors[1], duration, 0);
-                                    break;
-                                case duration * 6:
-                                    timesPulsed++;
-                                    break;
-                            }
-                            if (timesPulsed == tactors.Length + 1)
-                            {
-                                trialDone = true;
-                            }
-                        }           
-                    }
-                    stopWatch.Stop();
-                    stopWatch.Reset();
+                    await SimultaneousBlock2(tactors);
                     return;
                 }
-                
             }
+        }
 
+        public static async Task ForwardCollisionBlock3(int [] tactors)
+        {
+            Pulse(0, tactors[0], 215, 0);
+            await Task.Delay(4800);
+
+            Pulse(0, tactors[0], 215, 0);
+            await Task.Delay(3440);
+
+            Pulse(0, tactors[0], 215, 0);
+            await Task.Delay(1200);
+        }
+        public static async Task ForwardCollisionBlock4(int [] tactors)
+        {
+            for (int x = 0; x < 2; x++)
+            {
+                Pulse(0, tactors[0], 108, 0);
+                await Task.Delay(2400);
+
+                Pulse(0, tactors[0], 108, 0);
+                await Task.Delay(1720);
+
+                Pulse(0, tactors[0], 108, 0);
+                await Task.Delay(1800);
+            }
+        }
+        public static async Task HeadwayReductionBlock3(int [] tactors)
+        {
+            Pulse(0, tactors[0], 215, 0);
+            await Task.Delay(2500);
+
+            Pulse(0, tactors[1], 215, 0);
+            await Task.Delay(2500);
+
+            Pulse(0, tactors[2], 215, 0);
+            await Task.Delay(2500);
+
+            Pulse(0, tactors[3], 215, 0);
+            await Task.Delay(2500);
+
+            Pulse(0, tactors[4], 215, 0);
+            await Task.Delay(2500);
+        }
+        public static async Task HeadwayReductionBlock4(int [] tactors)
+        {
+            for (int x = 0; x < 2; x++)
+            {
+                Pulse(0, tactors[0], 108, 0);
+                await Task.Delay(1250);
+
+                Pulse(0, tactors[1], 108, 0);
+                await Task.Delay(1250);
+
+                Pulse(0, tactors[2], 108, 0);
+                await Task.Delay(1250);
+
+                Pulse(0, tactors[3], 108, 0);
+                await Task.Delay(1250);
+
+                Pulse(0, tactors[4], 108, 0);
+                await Task.Delay(1250);
+            }
+        }
+        public static async Task SequenceBlock1(int [] tactors)
+        {
+            Pulse(0, tactors[0], 215, 0);
+
+            await Task.Delay(215);
+            Pulse(0, tactors[1], 215, 0);
+
+            await Task.Delay(215);
+            Pulse(0, tactors[2], 215, 0);
+        }
+        public static async Task SimultaneousBlock1 (int [] tactors)
+        {
+            Pulse(0, tactors[0], 215, 0);
+            Pulse(0, tactors[1], 215, 0);
+
+            await Task.Delay(215);
+            Pulse(0, tactors[0], 215, 0);
+            Pulse(0, tactors[1], 215, 0);
+
+            await Task.Delay(215);
+            Pulse(0, tactors[0], 215, 0);
+            Pulse(0, tactors[1], 215, 0);
+        }
+        public static async Task SequenceBlock2(int[] tactors)
+        {
+            for (int x = 0; x < 2; x++)
+            {
+                Pulse(0, tactors[0], 108, 0);
+
+                await Task.Delay(108);
+                Pulse(0, tactors[1], 108, 0);
+
+                await Task.Delay(108);
+                Pulse(0, tactors[2], 108, 0);
+            }
+        }
+        public static async Task SimultaneousBlock2(int[] tactors)
+        {
+            for (int x = 0; x < 2; x++)
+            {
+                Pulse(0, tactors[0], 108, 0);
+                Pulse(0, tactors[1], 108, 0);
+
+                await Task.Delay(108);
+                Pulse(0, tactors[0], 108, 0);
+                Pulse(0, tactors[1], 108, 0);
+
+                await Task.Delay(108);
+                Pulse(0, tactors[0], 108, 0);
+                Pulse(0, tactors[1], 108, 0);
+            }
         }
     }
-
 }
